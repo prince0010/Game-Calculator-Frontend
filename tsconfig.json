@@ -3,7 +3,8 @@
     "strict": true,
     "jsx": "react",
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["react-native", "react", "react-native-vector-icons"],
   },
   "include": [
     "src/**/*.ts",

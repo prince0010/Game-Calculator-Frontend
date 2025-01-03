@@ -11,7 +11,7 @@ const LoginScreen = ({ navigation }: any) => {
       Alert.alert('Login Success');
       navigation.reset({
         index:0, //gi reset ang navigation Stack
-        routes: [{ name: 'Home' }], // Gina set lang na Home lang ang Only Route sa stack
+        routes: [{ name: 'Game Calculator' }], // Gina set lang na Home lang ang Only Route sa stack
       })
     } else {
       Alert.alert('Login Failed');
