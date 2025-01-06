@@ -12,7 +12,7 @@ const StackNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Search" component={SearchScreen} options={{ headerShown: true, headerTitle: 'Search' }}/>
+        {/* <Stack.Screen name="Search" component={SearchScreen} options={{ headerShown: true, headerTitle: 'Search' }}/> */}
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false}}/>
         <Stack.Screen name="Game Calculator" component={BottomTabNavigator} options={{ headerLeft: () => null}}/>
       </Stack.Navigator>
