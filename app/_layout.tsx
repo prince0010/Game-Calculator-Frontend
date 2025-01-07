@@ -1,14 +1,22 @@
-import { useEffect } from 'react'
-import { useRouter } from 'expo-router'
-import { Stack } from 'expo-router'
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, View } from 'react-native';
+import { useRouter, Stack } from 'expo-router';
+import { loadFonts } from '@/constants/fonts';
+import { Colors } from '@/constants/Colors';
 
 export default function Layout() {
-  const router = useRouter()
+  const router = useRouter();
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
-    // Ensure navigation happens after layout is mounted
-    router.replace('/screens/loginScreen')
-  }, [router])
+    const initialize = async () => {
+      await loadFonts(); 
+      setFontLoaded(true); 
+      router.replace('/screens/loginScreen');
+    };
 
-  return <Stack screenOptions={{ headerShown: false}} />
+    initialize();
+  }, [router]);
+
+  return <Stack screenOptions={{ headerShown: false }} />;
 }

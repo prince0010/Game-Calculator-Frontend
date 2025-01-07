@@ -52,3 +52,5 @@ Join our community of developers creating universal apps.
 
 expo install expo-font
 expo install @expo/vector-icons
+npm install react-native-safe-area-context
+npm install react-native-reanimated
