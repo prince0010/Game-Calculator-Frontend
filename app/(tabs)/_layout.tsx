@@ -69,7 +69,7 @@ export default function TabLayout() {
                       transform: [{ translateY: focused ? -18 : 0 }],
                       backgroundColor: focused ? 'white' : 'transparent',
                       borderRadius: 50, 
-                      padding: focused ? 40 : 0,
+                      padding: focused ? 30 : 0,
                       shadowColor: focused ? 'black' : 'transparent',
                       shadowOffset: { width: 0, height: 3 },
                       alignItems: 'center',
@@ -78,7 +78,7 @@ export default function TabLayout() {
                   >
                     <Ionicons
                       name={tab.icon}
-                      size={focused ? 45 : 32} 
+                      size={focused ? 40 : 32} 
                       color={focused ? 'green' : color} 
                       style={{
                         position: 'absolute', 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Button, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Button, ScrollView, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { Layout } from 'react-native-reanimated';
@@ -11,27 +11,18 @@ interface User {
 
 export default function GameScreen() {
   const [users, setUsers] = useState<User[]>([
-    { id: 1, name: 'User 1' },
-    { id: 2, name: 'User 2' },
-    { id: 3, name: 'User 3' },
-    { id: 4, name: 'User 4' },
-    { id: 5, name: 'User 5' },
-    { id: 6, name: 'User 6' },
-    { id: 7, name: 'User 7' },
-    { id: 8, name: 'User 8' },
-    { id: 9, name: 'User 9' },
-    { id: 10, name: 'User 10' },
-    { id: 11, name: 'User 11' },
-    { id: 12, name: 'User 12' },
+    { id: 1, name: 'Spongebob' },
+    { id: 2, name: 'Squarepants' },
+    { id: 3, name: 'Becky' },
+    { id: 4, name: 'Bayoy' },
   ]);
 
   const addUsers = () => {
     setUsers((prevUsers) => [
       ...prevUsers,
       { id: prevUsers.length + 1, name: `User ${prevUsers.length + 1}` },
-      { id: prevUsers.length + 2, name: `User ${prevUsers.length + 2}` },
     ]);
-  };
+  };    
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -59,35 +50,49 @@ export default function GameScreen() {
       </TouchableOpacity>
 
       <ScrollView contentContainerStyle={styles.cardsContainer}>
-        {users.reduce((acc, user, index) => {
-          if (index % 4 === 0) acc.push(users.slice(index, index + 4));
-          return acc;
-        }, [] as User[][]).map((userPair, idx) => (
-          <Animated.View
-            key={idx}
-            style={styles.card}
-            layout={Layout.springify()}  // Smooth transition if naay new card ma add
-          >
-            <View style={styles.cardContent}>
-              <View style={styles.userColumn}>
-                {userPair.slice(0, 2).map((user) => (
-                  <Text key={user.id} style={styles.userText}>
-                    {user.name}
-                  </Text>
-                ))}
-              </View>
+  {users.reduce((acc, user, index) => {
+    if (index % 4 === 0) acc.push(users.slice(index, index + 4));
+    return acc;
+  }, [] as User[][]).map((userPair, idx) => (
+    <Animated.View
+      key={idx}
+      style={styles.card}
+      layout={Layout.springify()}  // naay smooth transition if naay ma add na card
+    >
+      <View style={styles.cardContent}>
+        <View style={styles.userColumn}>
+          <Image source={require('@/assets/images/kiosk.png')} style={styles.image} />
+          {userPair.slice(0, 2).map((user, userIndex) => (
+  <Text key={user.id} style={styles.userText}>
+    {userIndex === 0 && userPair[1] ? `${user.name} & ` : user.name}
+  </Text>
+))}
+        </View>
+        <Text style={styles.matchText}>Match</Text>
+        
+        <View style={styles.userColumn}>
+          <Image source={require('@/assets/images/kiosk.png')} style={styles.image} />
+          {userPair.slice(2, 4).map((user, userIndex) => (
+            <Text key={user.id} style={styles.userText}>
+              {userIndex === 0 && userPair[3] ? `${user.name} & ` : user.name} 
+            </Text>
+          ))}
+        </View>
+      </View>
 
-              <View style={styles.userColumn}>
-                {userPair.slice(2, 4).map((user) => (
-                  <Text key={user.id} style={styles.userText}>
-                    {user.name}
-                  </Text>
-                ))}
-              </View>
-            </View>
-          </Animated.View>
-        ))}
-      </ScrollView>
+      {/* Live Circle and Court na Icon og ang katong W -- L or L -- W */}
+      <View style={styles.bottomSection}>
+        {/* Still thinking kung unsaon ni siya either drop down or input text ??*/}
+        <Text style={styles.statusGame}>W -- L</Text> 
+        <View style={styles.row}>
+    <View style={styles.liveCircle} />
+    <Text style={styles.courtText}>Court 1</Text>
+  </View>
+      </View>
+    </Animated.View>
+  ))}
+</ScrollView>
+
 
       <View style={styles.content}></View>
     </SafeAreaView>
@@ -129,7 +134,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
     borderWidth: 1,
     borderBottomColor: 'white',
-    width: 190,
+    width: 230,
     alignSelf: 'center',
   },
   subtitleWithCircle: {
@@ -144,37 +149,83 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   liveCircle: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: 'red',
-    marginRight: 8,
+   width: 10,
+   height: 10,
+   borderRadius: 5,
+   backgroundColor: 'red',
+   marginRight: 5,
   },
   addButton: {
     marginVertical: 20,
   },
   cardsContainer: {
-    paddingBottom: 50, // Ensuring na naa pay space ang bottom part para sa pag scroll 
+    paddingBottom: 50, // Gina ensure ang space sa bottom part para sa pang scrolling
   },
-  card: {
+card: {
     marginTop: 20,
     backgroundColor: '#002F06',
     borderRadius: 10,
-    padding: 16,
-    marginHorizontal: 16,
+    padding: 20, 
+    marginHorizontal: 17,
+    opacity: 1,
   },
   cardContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+    padding: 12,
+  },
+  matchText: {
+    color: 'white',
+    fontSize: 22,
+    textAlign: 'center',
+    fontFamily: 'zilla-slab-bold',
+    position: 'absolute', 
+    top: '-15%', 
+    left: '42%',
+    padding: 8
   },
   userColumn: {
     flexDirection: 'column',
     alignItems: 'center',
   },
+  image: {
+    width: 50,
+    height: 50,
+    marginBottom: 10,
+    borderRadius: 30,
+  },
   userText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 16,
     marginBottom: 10,
+    fontFamily: 'zilla-slab',
+  },
+  statusGame: {
+    color: 'white',
+    fontSize: 18,
+    marginBottom: 5, 
+  },
+  bottomSection: {
+    alignItems: 'center',
+    marginTop: -100,
+    marginBottom: 25,
+    width: 'auto',
+    alignSelf: 'center',
+    
+    flexDirection: 'column',
+    justifyContent: 'center'
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  courtText: {
+    color: 'white',
+    fontSize: 15,
+    marginTop: 5,
     fontFamily: 'zilla-slab',
   },
   content: {
