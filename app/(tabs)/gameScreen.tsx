@@ -22,7 +22,7 @@ export default function GameScreen() {
       ...prevUsers,
       { id: prevUsers.length + 1, name: `User ${prevUsers.length + 1}` },
     ]);
-  };    
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -40,7 +40,12 @@ export default function GameScreen() {
 
       <View style={styles.subtitleContainer}>
         <View style={styles.subtitleWithCircle}>
-          <View style={styles.liveCircle} />
+          <View
+            style={[
+              styles.liveCircle,
+              { backgroundColor: users.length > 0 ? 'red' : 'gray' },
+            ]}
+          />
           <Text style={styles.text1}>Today's Game Result</Text>
         </View>
       </View>
@@ -50,49 +55,63 @@ export default function GameScreen() {
       </TouchableOpacity>
 
       <ScrollView contentContainerStyle={styles.cardsContainer}>
-  {users.reduce((acc, user, index) => {
-    if (index % 4 === 0) acc.push(users.slice(index, index + 4));
-    return acc;
-  }, [] as User[][]).map((userPair, idx) => (
-    <Animated.View
-      key={idx}
-      style={styles.card}
-      layout={Layout.springify()}  // naay smooth transition if naay ma add na card
-    >
-      <View style={styles.cardContent}>
-        <View style={styles.userColumn}>
-          <Image source={require('@/assets/images/kiosk.png')} style={styles.image} />
-          {userPair.slice(0, 2).map((user, userIndex) => (
-  <Text key={user.id} style={styles.userText}>
-    {userIndex === 0 && userPair[1] ? `${user.name} & ` : user.name}
-  </Text>
-))}
-        </View>
-        <Text style={styles.matchText}>Match</Text>
-        
-        <View style={styles.userColumn}>
-          <Image source={require('@/assets/images/kiosk.png')} style={styles.image} />
-          {userPair.slice(2, 4).map((user, userIndex) => (
-            <Text key={user.id} style={styles.userText}>
-              {userIndex === 0 && userPair[3] ? `${user.name} & ` : user.name} 
-            </Text>
+        {users
+          .reduce((acc, user, index) => {
+            if (index % 4 === 0) acc.push(users.slice(index, index + 4));
+            return acc;
+          }, [] as User[][])
+          .map((userPair, idx) => (
+            <Animated.View
+              key={idx}
+              style={styles.card}
+              layout={Layout.springify()} // naay smooth transition if naay ma add na card
+            >
+              <View style={styles.cardContent}>
+                <View style={styles.userColumn}>
+                  <Image
+                    source={require('@/assets/images/kiosk.png')}
+                    style={styles.image}
+                  />
+                  {userPair.slice(0, 2).map((user, userIndex) => (
+                    <Text key={user.id} style={styles.userText}>
+                      {userIndex === 0 && userPair[1]
+                        ? `${user.name} & `
+                        : user.name}
+                    </Text>
+                  ))}
+                </View>
+                <Text style={styles.matchText}>Match</Text>
+
+                <View style={styles.userColumn}>
+                  <Image
+                    source={require('@/assets/images/kiosk.png')}
+                    style={styles.image}
+                  />
+                  {userPair.slice(2, 4).map((user, userIndex) => (
+                    <Text key={user.id} style={styles.userText}>
+                      {userIndex === 0 && userPair[3]
+                        ? `${user.name} & `
+                        : user.name}
+                    </Text>
+                  ))}
+                </View>
+              </View>
+
+              <View style={styles.bottomSection}>
+                <Text style={styles.statusGame}>W -- L</Text>
+                <View style={styles.row}>
+                  <View
+                    style={[
+                      styles.liveCircle,
+                      { backgroundColor: users.length > 0 ? 'red' : 'gray' },
+                    ]}
+                  />
+                  <Text style={styles.courtText}>Court 1</Text>
+                </View>
+              </View>
+            </Animated.View>
           ))}
-        </View>
-      </View>
-
-      {/* Live Circle and Court na Icon og ang katong W -- L or L -- W */}
-      <View style={styles.bottomSection}>
-        {/* Still thinking kung unsaon ni siya either drop down or input text ??*/}
-        <Text style={styles.statusGame}>W -- L</Text> 
-        <View style={styles.row}>
-    <View style={styles.liveCircle} />
-    <Text style={styles.courtText}>Court 1</Text>
-  </View>
-      </View>
-    </Animated.View>
-  ))}
-</ScrollView>
-
+      </ScrollView>
 
       <View style={styles.content}></View>
     </SafeAreaView>

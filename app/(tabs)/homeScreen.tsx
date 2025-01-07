@@ -11,10 +11,10 @@ interface User {
 
 export default function HomeScreen() {
   const [users, setUsers] = useState<User[]>([
-    { id: 1, name: 'Spongebob' },
-    { id: 2, name: 'Squarepants' },
-    { id: 3, name: 'Becky' },
-    { id: 4, name: 'Bayoy' },
+    // { id: 1, name: 'Spongebob' },
+    // { id: 2, name: 'Squarepants' },
+    // { id: 3, name: 'Becky' },
+    // { id: 4, name: 'Bayoy' },
   ]);
 
   const addUsers = () => {
@@ -40,7 +40,9 @@ export default function HomeScreen() {
 
       <View style={styles.subtitleContainer}>
         <View style={styles.subtitleWithCircle}>
-          <View style={styles.liveCircle} />
+          <View style={[styles.liveCircle, 
+              { backgroundColor: users.length > 0 ? 'red' : 'gray' },
+          ]} />
           <Text style={styles.text1}>Today's Game</Text>
         </View>
       </View>
