@@ -54,3 +54,10 @@ expo install expo-font
 expo install @expo/vector-icons
 npm install react-native-safe-area-context
 npm install react-native-reanimated
+
+expo install expo expo-blur expo-constants expo-font expo-haptics expo-linking expo-router expo-splash-screen expo-status-bar expo-symbols expo-system-ui expo-web-browser react-native jest-expo
+expo install jest-expo 
+npm install jest-expo@~52.0.3
+
+npm install @apollo/client graphql
+npm install @react-native-async-storage/async-storage

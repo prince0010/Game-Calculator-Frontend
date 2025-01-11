@@ -1,59 +1,67 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Alert, Image, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
-import ButtonLogin from '@/components/buttons';
-import * as Font from 'expo-font';
+import React, { useEffect, useState } from 'react'
+import { View, Text, TextInput, StyleSheet, Alert, Image, TouchableOpacity } from 'react-native'
+import { useRouter } from 'expo-router'
+import { useQuery } from '@apollo/client'
+import { GET_USER } from '../graphql/queries/queries'
+import ButtonLogin from '@/components/buttons'
+import * as Font from 'expo-font'
 
 const LoginScreen = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [fontLoaded, setFontLoaded] = useState(false);
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const router = useRouter();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [fontLoaded, setFontLoaded] = useState(false)
+  const [emailError, setEmailError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+  const router = useRouter()
+
+  // Fetch data from the backend using GraphQL
+  const { data, loading, error } = useQuery(GET_USER)
 
   useEffect(() => {
     const loadFonts = async () => {
       await Font.loadAsync({
         'zilla-slab-bold': require('@/assets/fonts/ZillaSlab-Bold.ttf'),
         'zilla-slab': require('@/assets/fonts/ZillaSlab-Regular.ttf'),
-      });
-      setFontLoaded(true);
-    };
-    loadFonts();
-  }, []);
+      })
+      setFontLoaded(true)
+    }
+    loadFonts()
+  }, [])
 
   const handleLogin = () => {
-    let valid = true;
+    let valid = true
     if (email === '') {
-      setEmailError('Email is required');
-      valid = false;
+      setEmailError('Email is required')
+      valid = false
     } else if (!email.includes('@')) {
-      setEmailError('Invalid email format');
-      valid = false;
+      setEmailError('Invalid email format')
+      valid = false
     } else {
-      setEmailError('');
+      setEmailError('')
     }
 
     if (password === '') {
-      setPasswordError('Password is required');
-      valid = false;
+      setPasswordError('Password is required')
+      valid = false
     } else if (password !== '120101') {
-      setPasswordError('Incorrect password');
-      valid = false;
+      setPasswordError('Incorrect password')
+      valid = false
     } else {
-      setPasswordError('');
+      setPasswordError('')
     }
 
     if (valid) {
-      Alert.alert('Login Success');
-      router.replace('/(tabs)/homeScreen'); 
+      Alert.alert('Login Success')
+      router.replace('/(tabs)/homeScreen') 
     }
-  };
+  }
 
   const handleForgotPassword = () => {
-    Alert.alert('Forgot Password clicked!');
-  };
+    Alert.alert('Forgot Password clicked!')
+  }
+
+  if (loading) return <Text>Loading...</Text>
+  if (error) return <Text>Error: {error.message}</Text>
 
   return (
     <View style={styles.container}>
@@ -94,9 +102,18 @@ const LoginScreen = () => {
 
         <ButtonLogin title="Login" onPress={handleLogin} />
       </View>
+
+      <View>
+        {/* Render user data from the GraphQL query */}
+        {data && (
+          <Text>
+            User Info: {data.user.name} - {data.user.email}
+          </Text>
+        )}
+      </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -160,6 +177,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginBottom: 10,
   },
-});
+})
 
-export default LoginScreen;
+export default LoginScreen
